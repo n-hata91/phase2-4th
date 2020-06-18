@@ -6,15 +6,25 @@
       <th colspan="3"></th>
     </tr>
   </thead>
-
   <tbody>
     <% users.each do |user| %>
       <tr>
         <td><%= attachment_image_tag(user, :profile_image, :fill, 50, 50, fallback: "no-image-icon.jpg") %></td>
         <td><%= user.name %></td>
-        <td>フォロー数：123</td>
-        <td>フォロワー数：123</td>
-        <td>フォローする・フォロー外す</td>
+        <% user ||= current_user %>
+        <td>
+          <%= link_to following_user_path(user) do %>
+            フォロー数： <%= user.following.count %> 
+          <% end %>
+        </td>
+        <td>
+          <%= link_to followers_user_path(user) do %>
+            フォロワー数： <%= user.followers.count %>
+          <% end %>  
+          </td>
+        <td>
+          <%= render 'follow_form', user: user %>
+        </td>
         <td><%= link_to 'Show', user, class: "user_#{user.id}" %></td>
       </tr>
     <% end %>
